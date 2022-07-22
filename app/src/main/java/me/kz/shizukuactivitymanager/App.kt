@@ -1,13 +1,10 @@
 package me.kz.shizukuactivitymanager
 
 import android.app.Application
-import android.content.pm.PackageInfo
 import coil.Coil
 import coil.ImageLoader
-import coil.fetch.Fetcher
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineDispatcher
-import me.zhanghai.android.appiconloader.coil.AppIconFetcher
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -23,6 +20,7 @@ class App : Application() {
                 .components {
                     add(AppIconFetcherFactory(this@App))
                 }
+                .interceptorDispatcher(dispatcher)
                 .dispatcher(dispatcher)
                 .build()
         }

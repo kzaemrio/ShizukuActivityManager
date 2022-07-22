@@ -3,12 +3,13 @@ package me.kz.shizukuactivitymanager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,11 +66,14 @@ fun Home(viewModel: MainViewModel = hiltViewModel()) {
             )
         }
     }) {
+        val list: List<Item> by viewModel.list.collectAsState()
+        val onClear: (String) -> Unit by rememberUpdatedState(newValue = viewModel::onClear)
+        val stop: (String) -> Unit by rememberUpdatedState(newValue = viewModel::onStop)
         Home(
             Modifier.padding(it),
-            viewModel.list.collectAsState().value,
-            viewModel::onClear,
-            viewModel::onStop
+            list,
+            onClear,
+            stop
         )
     }
 }
@@ -78,15 +82,15 @@ fun Home(viewModel: MainViewModel = hiltViewModel()) {
 fun Home(
     modifier: Modifier = Modifier,
     list: List<Item>,
-    clear: (String) -> Unit,
-    stop: (String) -> Unit
+    onClear: (String) -> Unit,
+    onStop: (String) -> Unit
 ) {
     if (list.isEmpty()) {
         Refresh()
     } else {
         LazyColumn(modifier) {
             items(items = list, key = { it.pgName }) {
-                Item(it, clear, stop)
+                Item(it, onClear, onStop)
             }
         }
     }
@@ -95,8 +99,8 @@ fun Home(
 @Composable
 fun Item(
     item: Item,
-    clear: (String) -> Unit,
-    stop: (String) -> Unit
+    onClear: (String) -> Unit,
+    onStop: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -109,26 +113,44 @@ fun Item(
             contentDescription = item.pgName
         )
         Spacer(modifier = Modifier.width(6.dp))
-        Column {
-            Text(text = item.appName, maxLines = 1)
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(text = item.pgName)
-            Spacer(modifier = Modifier.height(6.dp))
-            Row {
-                Button(
-                    modifier = Modifier.weight(1F),
-                    onClick = { clear(item.pgName) }
-                ) {
-                    Text(text = "clear")
-                }
-                Spacer(modifier = Modifier.width(6.dp))
-                Button(
-                    modifier = Modifier.weight(1F),
-                    onClick = { stop(item.pgName) }
-                ) {
-                    Text(text = "stop")
-                }
-            }
+        Info(item, onClear, onStop)
+    }
+}
+
+@Composable
+fun Info(
+    item: Item,
+    onClear: (String) -> Unit,
+    onStop: (String) -> Unit
+) {
+    Column(Modifier.fillMaxWidth()) {
+        Text(text = item.appName, maxLines = 1)
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(text = item.pgName)
+        Spacer(modifier = Modifier.height(6.dp))
+        ButtonGroup(item, onClear, onStop)
+    }
+}
+
+@Composable
+fun ButtonGroup(
+    item: Item,
+    onClear: (String) -> Unit,
+    onStop: (String) -> Unit
+) {
+    Row(Modifier.fillMaxWidth()) {
+        Button(
+            modifier = Modifier.weight(1F),
+            onClick = { onClear(item.pgName) }
+        ) {
+            Text(text = "clear")
+        }
+        Spacer(modifier = Modifier.width(6.dp))
+        Button(
+            modifier = Modifier.weight(1F),
+            onClick = { onStop(item.pgName) }
+        ) {
+            Text(text = "stop")
         }
     }
 }
