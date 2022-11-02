@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "me.kz.shizukuactivitymanager"
         minSdk 28
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -53,6 +53,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'me.kz.shizukuactivitymanager'
 }
 
 kotlin {
@@ -76,15 +77,15 @@ dependencies {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
-    implementation 'androidx.activity:activity-compose:1.5.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.activity:activity-compose:1.6.1'
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
-    implementation "com.google.accompanist:accompanist-swiperefresh:0.24.13-rc"
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
 
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -94,9 +95,9 @@ dependencies {
     implementation "dev.rikka.shizuku:api:$shizuku_version"
     implementation "dev.rikka.shizuku:provider:$shizuku_version"
 
-    implementation "io.coil-kt:coil-compose:2.1.0"
-    implementation 'me.zhanghai.android.appiconloader:appiconloader:1.4.0'
-    implementation 'me.zhanghai.android.appiconloader:appiconloader-iconloaderlib:1.4.0'
+    implementation "io.coil-kt:coil-compose:2.2.2"
+    implementation 'me.zhanghai.android.appiconloader:appiconloader:1.5.0'
+    implementation 'me.zhanghai.android.appiconloader:appiconloader-iconloaderlib:1.5.0'
     implementation 'me.zhanghai.android.appiconloader:appiconloader-coil:1.4.0'
 
     implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:4.3'
